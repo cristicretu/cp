@@ -23,6 +23,6 @@ int main() {
   }
   for (int i = 1; i <= n; ++i, fout << '\n') REP(j, m)
   fout << b[i][j] << ' ';
-  // test
+  // test asd
   return 0;
 }

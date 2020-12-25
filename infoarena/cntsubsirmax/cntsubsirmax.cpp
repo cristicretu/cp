@@ -23,5 +23,6 @@ int main() {
     ans = (ans + cnti) % M;
   }
   fout << ans;
+  // test merge?
   return 0;
 }

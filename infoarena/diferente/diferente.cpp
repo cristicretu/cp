@@ -9,5 +9,7 @@ std::ofstream fout("diferente.out");
 
 int main() {
   int n, k;
+  fin >> n >> k;
+  
   return 0;
 }

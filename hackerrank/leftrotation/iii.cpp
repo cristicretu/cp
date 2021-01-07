@@ -18,20 +18,17 @@ class Read {
   }
 };
 Read cin;
-
 int main() {
   std::ios_base::sync_with_stdio(false);
 
-  int a[10][10], ans = -64;
-  for (int i = 0; i < 6; ++i)
-    for (int j = 0; j < 6; ++j) cin >> a[i][j];
-
-  for (int i = 0; i <= 3; ++i)
-    for (int j = 0; j <= 3; ++j) {
-      int s = a[i][j] + a[i][j + 1] + a[i][j + 2];
-      s += a[i + 1][j + 1] + a[i + 2][j] + a[i + 2][j + 1] + a[i + 2][j + 2];
-      if (ans < s) ans = s;
-    }
-  std::cout << ans;
+  int n, nr;
+  cin >> n >> nr;
+  std::vector<int> v(n), ans(n);
+  for (auto& i : v) cin >> i;
+  for (int i = 0; i < n; ++i) {
+    int newi = (i + (n - nr)) % n;
+    ans[newi] = v[i];
+  }
+  for (auto i : ans) std::cout << i << ' ';
   return 0;
 }

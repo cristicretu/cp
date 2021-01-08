@@ -23,22 +23,13 @@ int main() {
 
   int n;
   cin >> n;
-  std::vector<int> v(n);
+  std::vector<long long> v(n);
   for (auto& i : v) cin >> i;
-
-  bool sortat;
-  int ans = 0;
-  do {
-    sortat = true;
-    for (int i = 0; i < n - 1; i++)
-      if (v[i] > v[i + 1]) {
-        std::swap(v[i], v[i + 1]);
-        ans++;
-        sortat = false;
-      }
-  } while (!sortat);
-  std::cout << "Array is sorted in " << ans << " swaps.\n";
-  std::cout << "First Element: " << v[0] << '\n';
-  std::cout << "Last Element: " << v[n - 1] << '\n';
+  std::sort(v.begin(), v.end());
+  long long ans = INT_MAX;
+  for (int i = 0; i < n - 1; ++i) {
+    ans = std::min(v[i + 1] - v[i], ans);
+  }
+  std::cout << ans;
   return 0;
 }

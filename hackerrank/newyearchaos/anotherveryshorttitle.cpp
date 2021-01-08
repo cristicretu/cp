@@ -18,27 +18,30 @@ class Read {
   }
 };
 Read cin;
-int main() {
-  std::ios_base::sync_with_stdio(false);
 
-  int n;
+void solve() {
+  int n, rem(0);
   cin >> n;
   std::vector<int> v(n);
   for (auto& i : v) cin >> i;
+  for (int i = v.size() - 1; i >= 0; --i) {
+    if (v[i] - (i + 1) > 2) {
+      std::cout << "Too chaotic\n";
+      return;
+    }
+    for (int j = std::max(0, v[i] - 2); j < i; ++j)
+      if (v[j] > v[i]) ++rem;
+  }
+  std::cout << rem << '\n';
+}
 
-  bool sortat;
-  int ans = 0;
-  do {
-    sortat = true;
-    for (int i = 0; i < n - 1; i++)
-      if (v[i] > v[i + 1]) {
-        std::swap(v[i], v[i + 1]);
-        ans++;
-        sortat = false;
-      }
-  } while (!sortat);
-  std::cout << "Array is sorted in " << ans << " swaps.\n";
-  std::cout << "First Element: " << v[0] << '\n';
-  std::cout << "Last Element: " << v[n - 1] << '\n';
+int main() {
+  std::ios_base::sync_with_stdio(false);
+
+  int T;
+  cin >> T;
+  while (T--) {
+    solve();
+  }
   return 0;
 }

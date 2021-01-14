@@ -26,6 +26,7 @@ int main() {
   std::vector<int> v(n);
   for (auto& i : v) cin >> i;
   std::sort(v.begin(), v.end());
+  
 
   return 0;
 }

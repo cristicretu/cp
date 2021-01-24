@@ -1,0 +1,3 @@
+{
+  "c-cpp-compile-run.cpp-flags": "-std=c++11 -Wall -Wextra -O2"
+}

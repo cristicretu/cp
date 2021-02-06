@@ -19,6 +19,7 @@ int main() {
         if (a * b + 1 == nr) ans++, fout << "palit";
       }
       if (a * b == nr) ans++;
+    } else if (a <= n && b > n) {
     }
     fout << ans << '\n';
   }

@@ -18,26 +18,33 @@ int calc(int i, int j) {
 
 int main() {
   fin >> s;
+  int n = s.size();
 
-  for (int i = 1; i <= s.size(); ++i) {
+  s = '*' + s;
+  for (int i = 1; i <= n; ++i) {
     v[i] = s[i] - 'a' + 1;
   }
 
   for (int i = 1; i <= 26; ++i) {
-    for (int j = 1; j <= s.size(); ++j) {
+    for (int j = 1; j <= n; ++j) {
       dp[i][j] = i;
     }
   }
 
   for (int i = 1; i <= 26; ++i) {
     dp[i][1] = calc(i, v[i]);
-    for (int j = 2; j <= s.size(); ++j) {
+    for (int j = 2; j <= n; ++j) {
       for (int k = 1; k <= i; ++k)
-        dp[i][j] = std::min(dp[k][j - 1] + calc(i, v[j]), k);
+        dp[i][j] = std::min(dp[k][j - 1] + calc(i, v[j]), dp[i][j]);
     }
   }
   int ans = 1e9;
-  for (int i = 1; i <= 26; ++i) ans = std::min(ans, dp[i][s.size()]);
-  fout << ans;
+  for (int i = 1; i <= 26; ++i) ans = std::min(i, dp[i][n]);
+  // fout << ans;
+  for (int i = 1; i <= 26; ++i, fout << std::endl) {
+    for (int j = 1; j <= n; ++j) {
+      fout << dp[i][j] << ' ';
+    }
+  }
   return 0;
 }

@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1614009750 source:/home/smol/fun/cplusplus/infoarena/rascoala/rascoala/main.c
+	<stdio.h>
+	<stdlib.h>
+

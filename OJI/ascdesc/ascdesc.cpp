@@ -27,7 +27,7 @@ int main(){
 /*   } */
 
   for (int i = 1; i <= n; ++i){
-    while (!stiva.empty() && v[i] < v[stiva.top()]){
+    while (!stiva.empty() && v[i] > v[stiva.top()]){
       stiva.pop();
     }
 

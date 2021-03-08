@@ -1,41 +1,76 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
+#include <fstream>
 
-std::ifstream fin("distincte.in");
-std::ofstream fout("distincte.out");
+typedef long long ll;
 
-const int mxn = 1e5 + 5, M = 666013;
+std::fstream fin("distincte.in", std::ios::in);
+std::fstream fout("distincte.out", std::ios::out);
 
-int a[mxn];
+static const int mxn = 1e5, M = 666013;
 
-void solve(int i, int j) {
-  long long ans = 0;
-  std::unordered_set<int> s;
-  for (int k = i; k <= j; ++k) {
-    s.insert(a[k]);
+ll n, m, k, upd[1 + mxn];
+
+struct Query{
+  ll l, r, orig;
+
+  bool operator < (const Query &other) const{
+    if (r == other.r) return l < other.l;
+    return r < other.r;
+  }
+}queries[1 + mxn];
+
+struct Aib{
+  ll v[1 + mxn];
+  
+  void update(ll poz, ll val){
+    for (ll i = poz; i <= n; i += i & (-i))
+        v[i] += val;
   }
 
-  for (auto it : s) {
-    ans += it;
-    ans %= M;
+  ll query(ll poz){
+    ll s = 0;
+    for (ll i = poz; i >= 1; i -= i & (-i))
+        s += v[i];
+    return s;
   }
+}aib;
 
-  fout << ans << '\n';
-}
+ll v[1 + mxn], ans[1 + mxn];
 
 int main() {
-  int n, k, m;
   fin >> n >> k >> m;
 
-  for (int i = 0; i < n; ++i) {
-    fin >> a[i];
+  for (ll i = 1; i <= n; ++i){
+    fin >> v[i];
+    aib.update(i, v[i]);
   }
 
-  while (m--) {
-    int a, b;
-    fin >> a >> b;
-
-    if (a != 1) a--;
-    solve(a - 1, b - 1);
+  for (ll i = 1; i <= m; ++i){
+    fin >> queries[i].l >> queries[i].r;
+    queries[i].orig = i;
   }
+  
+  std::sort(queries + 1, queries + m + 1);
+  ll poz = 1;
+  for (ll i = 1; i <= m; ++i){
+    while (poz <= queries[i].r){
+      if (upd[v[poz]]){
+        aib.update(upd[v[poz]], -v[poz]);
+      }
+      upd[v[poz]] = poz;
+      poz++;
+    }
+
+    ans[queries[i].orig] = aib.query(queries[i].r) -
+                           aib.query(queries[i].l - 1);
+  }
+
+  for (ll i = 1; i <= m; ++i){
+    std::cerr << m << ' ';
+    std::cerr << ans[i] % M << ' ';
+    fout << ans[i] % M << '\n';
+  }
+  
   return 0;
 }

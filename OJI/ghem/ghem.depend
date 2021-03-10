@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1615300659 source:c:\users\cristi\documents\source cpp\ghem\main.cpp
+	<iostream>
+	<fstream>
+

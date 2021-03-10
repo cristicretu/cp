@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1615299510 source:c:\users\cristi\documents\source cpp\secvcost\main.cpp
+	<iostream>
+	<fstream>
+	<stack>
+

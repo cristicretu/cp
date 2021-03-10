@@ -3,21 +3,26 @@
 std::ifstream fin("rucsac.in");
 std::ofstream fout("rucsac.out");
 
-const int mxn = 5e3 + 2;
+static const int mxn = 5e4;
 
-int n, g, w[mxn], p[mxn], ans[10005];
+int n, g, w[1 + mxn], p[1 + mxn], ans[1 + mxn];
 
-int main() {
+int main(){
   fin >> n >> g;
-  for (int i = 1; i <= n; ++i) fin >> w[i] >> p[i];
-  for (int i = 1; i <= n; i++) {
-    for (int j = g - w[i]; j >= 0; j--) {
-      if (ans[j] != 0 || j == 0)
-        ans[j + w[i]] = std::max(ans[j + w[i]], ans[j] + p[i]);
+  for (int i = 1; i <= n; ++i){
+    fin >> w[i] >> p[i];
+  }
+
+  int rez = 0;
+  for (int i = 1; i <= n; ++i){
+    for (int j = g - w[i]; j >= 0; --j){
+      if (ans[j + w[i]] < ans[j] + p[i]){
+        ans[j + w[i]] = ans[j] + p[i];
+        rez = std::max(ans[j + w[i]], rez);
+      }
     }
   }
-  int rem = -1;
-  for (int i = 1; i <= g; ++i) rem = std::max(rem, ans[i]);
-  fout << rem;
+
+  fout << rez << '\n';
   return 0;
 }

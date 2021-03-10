@@ -4,9 +4,8 @@
 std::fstream fin("evaluare.in", std::ios::in);
 std::fstream fout("evaluare.out", std::ios::out);
 
-std::string s;
 int i;
-
+std::string s;
 int eval();
 int eval1();
 int eval2();
@@ -37,23 +36,23 @@ int eval1(){
       rez /= eval2();
     }
   }
-
+  
   return rez;
 }
 
 int eval2(){
   int rez = 0;
+
   if (s[i] == '('){
     ++i;
-    rez = eval();
+    rez += eval();
     ++i;
   } else {
-    while (isdigit(s[i])){
+    while ('0' <= s[i] && s[i] <= '9'){
       rez = rez * 10 + (s[i] - '0');
       ++i;
     }
   }
-
   return rez;
 }
 

@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1615559558 source:c:\users\cristi\documents\source cpp\problema1\main.cpp
+	<iostream>
+	<fstream>
+	<queue>
+	<bitset>
+

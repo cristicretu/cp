@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1615564148 source:c:\users\cristi\documents\source cpp\problema2\main.cpp
+	<iostream>
+	<fstream>
+	<vector>
+	<string>
+	<algorithm>
+	<unordered_set>
+

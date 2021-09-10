@@ -1,6 +1,0 @@
-<leader> + j - open a file
-<leader> + z - ZEN mode
-
-
-Other things:
-https://www.youtube.com/watch?v=IiwGbcd8S7I

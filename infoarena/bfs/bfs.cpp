@@ -1,51 +1,57 @@
 #include <iostream>
+#include <vector>
 #include <queue>
 #include <fstream>
-#include <vector>
 
-std::ifstream fin("bfs.in");
-std::ofstream fout("bfs.out");
+std::fstream fin("bfs.in", std::ios::in);
+std::fstream fout("bfs.out", std::ios::out);
 
-static const int mxn = 1e5 + 5;
+const int mxn = 1000005;
 
-int n, m, s;
-int distance[mxn];
-std::vector<int> adj[mxn];
+int n, m, start;
+std::vector<int> muchii[mxn];
+std::queue<int> cords;
+int dist[mxn];
 
-inline void bfs(){
-  std::queue<int> q;
-  q.push(s);
-  distance[s] = 0;
+void bfs() {
+  int nod;
+  
+  while (!cords.empty()) {
+    nod = cords.front();
+    cords.pop();
 
-  while (!q.empty()){
-    int node = q.front();
-    q.pop();
-
-    for (int i = 0; i < adj[node].size(); ++i){
-      int node_next = adj[node][i];
-      if (distance[node_next] == -1){
-        q.push(node_next);
-        distance[node_next] = distance[node] + 1;
+    for (auto vec : muchii[nod]) {
+      if (dist[vec] == -1) {
+        cords.push(vec);
+        dist[vec] = dist[nod] + 1;
       }
     }
   }
 }
 
 int main(){
-  fin >> n >> m >> s;
-  for (int i = 1; i <= m; ++i){
-    int a, b;
-    fin >> a >> b;
-    adj[a].push_back(b);
-  }
-  for (int i = 1; i <= n; ++i){
-    distance[i] = -1;
+	fin >> n >> m >> start;
+
+  for (int i = 0; i < m; ++i) {
+    int x, y;
+    fin >> x >> y;
+    muchii[x].push_back(y);
   }
 
+  for (int i = 1; i <= n; ++i) {
+    dist[i] = -1;
+  }
+  dist[start] = 0;
+
+  cords.push(start);
+
   bfs();
-  for (int i = 1; i <= n; ++i){
-    fout << distance[i] << ' ';
+
+  for (int i = 1; i <= n; ++i) {
+    fout << dist[i] << ' ';
   }
   fout << '\n';
+
+
   return 0;
 }

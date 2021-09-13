@@ -1,4 +1,5 @@
 # Prerequisites
+*.dSYM
 *.d
 
 # Compiled Object files

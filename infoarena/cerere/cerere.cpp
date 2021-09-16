@@ -1,42 +1,62 @@
-/**
- *    author: etohirse
- *    created: 29.12.2020 18:56:20
- **/
-#include <bits/stdc++.h>
+#include <fstream>
+#include <iostream>
+#include <vector>
 
-std::ifstream fin("cerere.in");
-std::ofstream fout("cerere.out");
+std::fstream fin("cerere.in", std::ios::in);
+std::fstream fout("cerere.out", std::ios::out);
 
-const int mxn = 1e5 + 2;
-int av[mxn], rem[mxn], count;
-bool viz[mxn];
+const int mxn = 1e5 + 1;
 
+int n;
+bool radacina[mxn];
+int k[mxn], ans[mxn], steps;
 std::vector<int> mat[mxn], temp;
 
-void DFS(int nod) {
-  temp.push_back(nod);
-  count += 1;
-  if (av[nod]) rem[nod] = rem[temp[count - av[nod] - 1]] + 1;
-  for (auto i : mat[nod]) DFS(i);
+void dfs(int node) {
+  temp.push_back(node);
+
+  steps += 1;
+
+  if (k[node]) {
+    ans[node] = ans[temp[steps - k[node] - 1]] + 1;
+  }
+
+  for (auto vecin : mat[node]) {
+    dfs(vecin);
+  }
+
   temp.pop_back();
-  count -= 1;
+
+  steps -= 1;
 }
 
 int main() {
-  int n;
   fin >> n;
-  for (int i = 1; i <= n; ++i) fin >> av[i];
-  for (int i = 1; i < n; ++i) {
-    int a, b;
-    fin >> a >> b;
-    viz[b] = 1;
-    mat[a].push_back(b);
+
+  for (int i = 1; i <= n; ++i) {
+    fin >> k[i];
   }
-  for (int i = 1; i <= n; ++i)
-    if (viz[i] == 0) {
-      DFS(i);
+
+  for (int i = 1; i < n; ++i) {
+    int x, y;
+    fin >> x >> y;
+    radacina[y] = 1;
+    mat[x].push_back(y);
+  }
+
+  int rad;
+  for (int i = 1; i <= n; ++i) {
+    if (!radacina[i]) {
+      rad = i;
       break;
     }
-  for (int i = 1; i <= n; ++i, fout << ' ') fout << rem[i];
+  }
+
+  dfs(rad);
+
+  for (int i = 1; i <= n; ++i) {
+    fout << ans[i] << ' ';
+  }
+  fout << '\n';
   return 0;
 }

@@ -1,12 +1,32 @@
 #include <iostream>
-#include <set>
-#include <vector>
+#include <stack>
 
-const int maxN = 200000;
+const int mxn = 200000;
 
 int n;
-int mat[1 + maxN];
-int fr[1 + maxN];
+int mat[1 + mxn];
+bool viz[1 + mxn];
+bool recStack[1 + mxn];
+
+void dfs(int node) {
+  viz[node] = true;
+
+  int vecin = mat[node];
+  if (!viz[vecin]) {
+    std::stack<int> st;
+    st.push(vecin);
+    viz[vecin] = true;
+    process(vecin, st);
+  }
+}
+
+void dfs(int node) {
+  if (viz[node]) {
+    if (node == start) printf("we gottem");
+    return;
+  }
+  viz[node] = true;
+}
 
 int main(void) {
   int i;
@@ -16,23 +36,10 @@ int main(void) {
     scanf("%d", &mat[i]);
   }
 
-  int ans = 0;
   for (i = 1; i <= n; ++i) {
-    fr[i] += 1;
-    int vecin = mat[i];
-    ans = 1;
-
-    while (fr[vecin] + 1 <= i) {
-      ans += 1;
-      fr[vecin] += 1;
-      vecin = mat[vecin];
-    }
-
-    printf("%d ", ans);
-
-    // printf("%d ", s.size());
+    viz[i] = false;
+    recStack[i] = false;
   }
 
-  printf("\n");
-  return 0;
+  for (i = 1; i <= n; ++i) return 0;
 }

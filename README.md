@@ -1,2 +1,0 @@
-# cplusplus
-solutions to problems

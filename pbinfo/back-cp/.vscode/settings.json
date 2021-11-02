@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "*.mdx": "markdown",
+    "ios": "cpp",
+    "iostream": "cpp",
+    "algorithm": "cpp"
+  }
+}

@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <fstream>
+#include <vector>
 
 std::ifstream fin("beaufort.in");
 std::ofstream fout("beaufort.out");

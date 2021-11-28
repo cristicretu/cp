@@ -9,20 +9,19 @@ int n, v[1 + mxn], m;
 
 int main() {
   fin >> n;
-  for (int i = 1; i <= n; ++i){
+  for (int i = 1; i <= n; ++i) {
     fin >> v[i];
   }
-
   fin >> m;
-  for (int t = 1; t <= m; ++t){
+  for (int t = 1; t <= m; ++t) {
     int a, b, ans;
     fin >> a >> b;
-    if (a == 2){
+    if (a == 2) {
       int lb = 1, rb = n;
-      while (lb <= rb){
+      while (lb <= rb) {
         int mb = lb + (rb - lb) / 2;
 
-        if (v[mb] < b){
+        if (v[mb] < b) {
           lb = mb + 1;
         } else {
           rb = mb - 1;
@@ -33,10 +32,10 @@ int main() {
       fout << ans << '\n';
     } else {
       int lb = 1, rb = n;
-      while (lb <= rb){
+      while (lb <= rb) {
         int mb = lb + (rb - lb) / 2;
 
-        if (v[mb] <= b){
+        if (v[mb] <= b) {
           ans = mb;
           lb = mb + 1;
         } else {
@@ -44,9 +43,11 @@ int main() {
         }
       }
 
-      if (a == 0){
-        if (v[ans] == b) fout << ans << '\n';
-        else fout << "-1\n";
+      if (a == 0) {
+        if (v[ans] == b)
+          fout << ans << '\n';
+        else
+          fout << "-1\n";
       } else {
         fout << ans << '\n';
       }

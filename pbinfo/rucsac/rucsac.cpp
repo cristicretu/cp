@@ -38,6 +38,10 @@ int main(void) {
     }
   }
 
+  for (int i = 0; i < n; ++i) {
+    cout << a[i].w << ' ' << a[i].p << '\n';
+  }
+
   cout << ans << '\n';
   return 0;
 }

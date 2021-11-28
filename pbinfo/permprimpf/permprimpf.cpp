@@ -1,13 +1,9 @@
-#include <algorithm>
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
-int n, st[16], a[16];
-bool viz[16];
-
-vector<vector<int>> L;
+int n, st[20], v[20];
+bool p[20];
 
 bool ePrim(int x) {
   if (x < 2) return false;
@@ -28,31 +24,30 @@ bool ePrim(int x) {
   if (x == 16) return false;
 }
 
-bool verif(int k) {
-  for (int i = 1; i < k; ++i) {
-    if (st[i] == st[k]) return false;
+bool valid(int k) {
+  for (int i = 1; i <= n; ++i) {
+    if (k == i && ePrim(v[i]) && v[st[k]] != v[i]) return false; 
   }
   return true;
 }
 
-int idx = 0;
-
 void bkt(int k) {
-  if (k == n + 1) {
-    for (int i = 1; i <= n; ++i) {
-      // L[idx].push_back(a[st[i]]);
-    }
-    idx++;
-  } else {
-    if (st[k] && viz[k]) {
-      bkt(k + 1);
-    } else {
-      for (int i = 1; i <= n; ++i) {
-        st[k] = i;
-        if (verif(k)) {
+  for (int i = 1; i <= n; ++i) {
+    if (!p[i]) {
+      p[i] = 1;
+      st[k] = i;
+
+      if (valid(k)) {
+        if (k == n) {
+          for (int j = 1; j <= n; ++j) {
+            cout << v[st[j]] << ' ';
+          }
+          cout << '\n';
+        } else {
           bkt(k + 1);
         }
       }
+      p[i] = 0;
     }
   }
 }
@@ -63,18 +58,19 @@ int main() {
 
   cin >> n;
   for (int i = 1; i <= n; ++i) {
-    cin >> a[i];
-    if (ePrim(a[i])) {
-      st[i] = i;
-      viz[i] = true;
+    cin >> v[i];
+  }
+
+  for (int i = 1; i <= n; ++i) {
+    for (int j = i + 1; j <= n; ++j) {
+      if (!ePrim(v[j]) && v[i] > v[j]) {
+        int aux = v[i];
+        v[i] = v[j];
+        v[j] = aux;
+      }
     }
   }
 
   bkt(1);
-  for (int i = 0; i < L.size(); ++i, cout << '\n') {
-    for (int j = 0; j < L[0].size(); ++j) {
-      cout << L[i][j] << ' ';
-    }
-  }
   return 0;
 }

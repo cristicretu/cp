@@ -1,0 +1,64 @@
+#include "../../framework/header.hpp"
+#include "../../framework/common.hpp"
+
+#include <iostream>
+#include <string>
+#include <stack>
+
+using namespace std;
+
+string simplifyPath(string path)
+{
+  stack<string> st;
+  string answer;
+
+  for (unsigned i = 0, n = path.size(); i < n; ++i)
+  {
+    if (path[i] == '/')
+      continue;
+
+    string str;
+
+    // navigate between dirs
+    while (i < n && path[i] != '/')
+    {
+      str += path[i];
+      ++i;
+    }
+
+    if (str == ".")
+      continue;
+    else if (str == "..")
+    {
+      if (!st.empty())
+      {
+        st.pop();
+      }
+    }
+    else
+    {
+      st.push(str);
+    }
+  }
+
+  // place the items in reverse order (stack)
+  while (!st.empty())
+  {
+    answer = "/" + st.top() + answer;
+    st.pop();
+  }
+
+  if (answer.size() == 0)
+    return "/";
+  return answer;
+}
+
+TEST_CASE("simplifyPath", "[main]")
+{
+  REQUIRE(simplifyPath("/home/") == "/home");
+  REQUIRE(simplifyPath("/../") == "/");
+  REQUIRE(simplifyPath("/home//foo/") == "/home/foo");
+  REQUIRE(simplifyPath("/a/./b/../../c/") == "/c");
+  REQUIRE(simplifyPath("/a/../../b/../c//.//") == "/c");
+  REQUIRE(simplifyPath("/a//b////c/d//././/..") == "/a/b/c");
+}

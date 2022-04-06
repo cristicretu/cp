@@ -1,6 +1,11 @@
-class Solution {
-public:
-    string simplifyPath(string path) {
+#include "catch.hpp"
+
+#include <stack>
+#include <iostream>
+
+using namespace std;
+
+string simplifyPath(string path) {
       stack<string> st;
       string answer;
       
@@ -34,4 +39,12 @@ public:
       if (answer.size() == 0) return "/";
       return answer;
     }
-};
+
+TEST_CASE("simplifyPath", "[simplifyPath]") {
+    REQUIRE(simplifyPath("/home/") == "/home");
+    REQUIRE(simplifyPath("/../") == "/");
+    REQUIRE(simplifyPath("/home//foo/") == "/home/foo");
+    REQUIRE(simplifyPath("/a/./b/../../c/") == "/c");
+    REQUIRE(simplifyPath("/a/../../b/../c//.//") == "/c");
+    REQUIRE(simplifyPath("/a//b////c/d//././/..") == "/a/b/c");
+}

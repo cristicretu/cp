@@ -52,13 +52,3 @@ string simplifyPath(string path)
     return "/";
   return answer;
 }
-
-TEST_CASE("simplifyPath", "[main]")
-{
-  REQUIRE(simplifyPath("/home/") == "/home");
-  REQUIRE(simplifyPath("/../") == "/");
-  REQUIRE(simplifyPath("/home//foo/") == "/home/foo");
-  REQUIRE(simplifyPath("/a/./b/../../c/") == "/c");
-  REQUIRE(simplifyPath("/a/../../b/../c//.//") == "/c");
-  REQUIRE(simplifyPath("/a//b////c/d//././/..") == "/a/b/c");
-}

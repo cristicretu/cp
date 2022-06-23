@@ -1,0 +1,57 @@
+1. C
+2. D
+3. A
+4. B
+5. C
+
+1.
+  a. 4
+  b. 11, 13
+  c. ...
+  d. 
+  citeste n
+  i <- 2, k <- 0
+  cat timp n >= i executa:
+    daca n % i = 0 atunci:
+      repeta:
+        k <- k + 1
+        n <- [n / i]
+      pana cand n % i != 0
+    sf-daca
+
+    daca i = 2 atunci:
+      i <- i + 1
+    altfel:
+      i <- i + 2
+  sf-cat timp
+  scrie k
+
+2. 2023, 2024
+3.
+strcpy(id, strchr(s, ' ') + 1);
+strcat(id, "2022");
+
+1.
+202233228 -> 202033208
+
+int secventa(int n) {
+  int put = 1;
+  
+  int ans = n;
+  while (n % 100) {
+    if (n % 100 == 22) {
+      ans = ans - 2 * put;
+    }
+
+    put *= 10;
+
+    n /= 10;
+  }
+
+  return ans;
+}
+
+2.
+
+
+

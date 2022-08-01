@@ -1,0 +1,77 @@
+1. D
+2. 2022 - 2 = 2020/10 = 202 => 202345 -> C
+3. lodgy logan sandero
+   logan lodgy sandero -> A
+4. s = info@rocnee.eu
+   s[11] = '/0' => s = info@rocnee
+   d = rocnee -> C
+5. 1 -> F(1) => 2
+   2 -> F(0) => 0
+   3 -> F(3) => 4 [4, 5, 6, 7] => 3 -> B
+
+1.
+x = 18
+p = 1 * 1 * 0
+nr prime -> 37, 23
+
+113
+237
+while n>10:
+
+1-2, 1-3, 1-5, 2-3, 2-5, 3-5
+
+unsigned s = 0;
+for (unsigned i = 0; i < 16; ++i) {
+  s += t[i].pret * t[i].nrLocuri;
+}
+
+void patrate(int n, int &x, int &y) {
+  int d = 2, p;
+  while (n > 0) {
+    p = 0;
+    if (n % d == 0) {
+      n /= d;
+      p ++;
+    }
+
+    if (p) {
+      cout << d << ' ' << p << endl;
+    }
+    ++d;
+
+    if (n > 1 && d * d > n) {
+      d = n;
+    }
+  }
+}
+
+int a[101][101];
+
+for (int i = 1; i <= n; ++i) {
+  for (int j = 1; j <= m; ++j) {
+    if (i == j && i != n) {
+      for (int k = i; k <= n; ++k) {
+        a[k][j] = a[k][j + 1];
+      }
+    } 
+  }
+}
+
+int a, previous = 0, target = 0, remains = 0, l = 0, ans = 0;
+
+  while (fin >> a) {
+    if (a != previous && l != target + remains) {
+      l = 0;
+      remains = 0;
+    } else if (a != previous) {
+      remains += l;
+              ans = max(ans, l);
+
+    }
+    target = a;
+    l += 1;
+    previous = a;
+  }
+        ans = max(ans, l);
+
+  cout << ans;

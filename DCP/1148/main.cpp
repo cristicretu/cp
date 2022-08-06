@@ -1,94 +1,101 @@
-/*
- * =====================================================================================
- *
- *       Filename:  main.cpp
- *
- *    Description:  Given a linked list and a positive integer k, rotate the list to the right by k places.
- *
- *        Version:  1.0
- *        Created:  08/06/2022 12:19:26
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  YOUR NAME (), 
- *   Organization:  
- *
- * =====================================================================================
- */
 #include <iostream>
 
-class node {
-  public:
-    int value;
-    node* next;
+struct Node {
+  int data;
+  Node* next;
 };
 
-void push(node **head, int a) {
-  node *new_node = new node;
+class LinkedList {
+  private: 
+    Node* head;
+  public:
+    LinkedList() {
+      head = NULL;
+    }
 
-  new_node->value = a;
-  new_node->next = NULL;
+    void push_back(int element) {
+      Node* newNode = new Node();
 
-  if (head == NULL) {
-    *head = new_node;
-    return;
-  }
+      newNode->data = element;
+      newNode->next = NULL;
 
-  node *t = *head;
-  while (t->next != NULL) {
-    t = t->next;
-  }
-  t->next = new_node;
-}
+      if (head == NULL) {
+        head = newNode;
+      } else {
+        Node* temp = head;
 
-void print(node *head) {
-  while (head != NULL) {
-    std::cout << head->value << ' ';
-    head = head->next;
-  }
-  std::cout << '\n';
-}
+        while (temp->next != NULL) {
+          temp = temp->next;
+        }
+        temp->next = newNode;
+      }
+    }
 
-void solve(node **head, int k) {
-  if (k == 0) return;
+    void push_front(int element) {
+      Node* newNode = new Node();
 
-  node* current = *head;
+      newNode->data = element;
+      newNode->next = head;
 
-  int cnt = 1;
-  while (cnt < k && current != NULL) {
-    current = current->next;
-    cnt += 1;
-  }
+      head = newNode;
+    }
 
-  if (current == NULL) return;
+    void print_list() {
+      Node* temp = head;
 
-  // add the remaining elements at the start
-  node *start = current;
+      if (temp != NULL) {
+        while (temp != NULL) {
+          std::cout << temp->data << ' ';
+          temp = temp->next;
+        }
+        std::cout << '\n';
+      } else {
+        std::cout << "The list is empty.\n";
+      }
+    }
 
-  while (current->next != NULL) {
-    current = current->next;
-  }
+    void rotate_list(int k) {
+      if (k == 0) return; 
 
-  current->next = *head;
+      Node* current = head;
 
-  *head = start->next;
+      int count = 1;
+      while (count < k && current != NULL) {
+        count++;
+        current = current->next;
+      }
 
-  start->next = NULL;
-}
+      if (current == NULL) return;
+
+      Node* toRotate = current;
+
+      while (current->next != NULL) {
+        current = current->next;
+      }
+
+      current->next = head;
+
+      head = toRotate->next;
+
+      toRotate->next = NULL;
+    }
+};
 
 int main() {
+  LinkedList list;
+
   int n, k, a;
-
-  node *p = new node;
-
   std::cin >> n >> k;
+
   for (int i = 0; i < n; ++i) {
     std::cin >> a;
 
-    push(&p, a);
+    list.push_back(a);
   }
 
-  solve(&p, k);
-  print(p);
-  return 0;
+  list.print_list();
+
+  list.rotate_list(k);
+
+  list.print_list();
 }

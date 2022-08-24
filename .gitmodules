@@ -1,6 +1,0 @@
-[submodule "leetcode/leetcode/Catch2"]
-	path = leetcode/leetcode/Catch2
-	url = git@github.com:catchorg/Catch2.git
-[submodule "leetcode/Catch2"]
-	path = leetcode/Catch2
-	url = git@github.com:catchorg/Catch2.git

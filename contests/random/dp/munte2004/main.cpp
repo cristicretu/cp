@@ -29,12 +29,15 @@ const int maxN = 1e4 + 1;
 
 int a[maxN];
 int L[maxN], R[maxN];
-int n;
+
+int D[maxN]; // D[j] - elementul din a in care se termina subsirul de lung j
+int n, lung;
 
 void solve();
 void read();
 void cmlscL();
 void cmlscR();
+int cbin(int x);
 
 int main() {
   ios_base::sync_with_stdio(false);
@@ -51,9 +54,12 @@ int main() {
   return 0;
 }
 
+
 void solve() {
   read();
+  lung = 0;
   cmlscL();
+  lung = 0;
   cmlscR();
 
   int mx = -1;
@@ -66,25 +72,47 @@ void solve() {
   fout << n - mx;
 }
 
+int cbin(int x) {
+  if (D[lung] <= x) return lung + 1;
+  int lb = 1, rb = lung;
+  int ans(0);
+  while (lb <= rb) {
+    int mb = (lb + (rb - lb) / 2);
+
+    if (D[mb] > x) {
+      ans = mb;
+      rb = mb - 1;
+    } else {
+      lb = mb + 1;
+    }
+  }
+
+  return ans;
+}
+
 void cmlscL() {
   for (int i = 1; i <= n; ++i) {
-    L[i] = 1;
-    for (int j = 1; j < i; ++j) {
-      if (L[i] < L[j] + 1 && a[j] < a[i]) {
-        L[i] = L[j] + 1;
-      }
+    int poz = cbin(a[i]);
+    if (poz > lung) {
+      lung ++;
+      poz = lung;
     }
+
+    D[poz] = a[i];
+    L[i] = poz;
   } 
 }
 
 void cmlscR() {
   for (int i = n; i; --i) {
-    R[i] = 1;
-    for (int j = i + 1; j <= n; ++j) {
-      if (R[i] < R[j] + 1 && a[j] > a[i]) {
-        R[i] = R[j] + 1;
-      }
+    int poz = cbin(a[i]);
+    if (poz > lung) {
+      lung ++;
+      poz = lung;
     }
+
+    R[i] = poz;
+    D[poz] = a[i];
   }
 }
 

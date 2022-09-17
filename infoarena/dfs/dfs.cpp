@@ -1,43 +1,56 @@
 #include <iostream>
+#include <algorithm>
 #include <fstream>
 #include <vector>
 
-std::fstream fin("dfs.in", std::ios::in);
-std::fstream fout("dfs.out", std::ios::out);
+using namespace std;
 
-const int mxN = 100005;
+std::ifstream fin("dfs.in");
+std::ofstream fout("dfs.out");
+
+const int maxn = 100001;
 
 int n, m, ans;
-bool viz[mxN];
-std::vector<int>Muchii[mxN];
+bool viz[maxn];
+vector<int>mat[maxn];
 
-void dfs(int nod) {
-    viz[nod] = 1;
+void solve();
+void dfs(int node);
+void read();
 
-    for (auto vecin : Muchii[nod]) {
-      if (!viz[vecin]) {
-        dfs(vecin);
-      }
-    }
-}
-
-int main(){
-  fin >> n >> m;
-
-  for (int i = 0; i < m; ++i) {
-     int x, y;
-     fin >> x >> y;
-     Muchii[x].push_back(y);
-     Muchii[y].push_back(x);
-  }
-
-  for (int i = 1; i <= n; ++i) {
-      if (!viz[i]) {
-          ans += 1;
-          dfs(i);
-      }
-  }
+int main() {
+  solve();
 
   fout << ans << '\n';
   return 0;
+}
+
+void dfs(int node) {
+  viz[node] = true;
+  for (auto v: mat[node]) {
+    if (!viz[v]) {
+      dfs(v);
+    }
+  }
+}
+
+void solve() {
+  read();
+
+  for (int i = 1; i <= n; ++i) {
+    if (!viz[i]) {
+      ans += 1;
+      dfs(i);
+    }
+  }
+}
+
+void read() {
+  fin >> n >> m;
+  for (int i = 1; i <= m; ++i) {
+    int a, b;
+    fin >> a >> b;
+    mat[a].push_back(b);
+    mat[b].push_back(a);
+  }
 }

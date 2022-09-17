@@ -1,57 +1,79 @@
+#include <fstream>
 #include <iostream>
 #include <vector>
 #include <queue>
-#include <fstream>
+using namespace std;
 
-std::fstream fin("bfs.in", std::ios::in);
-std::fstream fout("bfs.out", std::ios::out);
+ifstream fin("bfs.in");
+ofstream fout("bfs.out");
 
-const int mxn = 1000005;
+using ll = long long;
+#define mod 1000000007
 
-int n, m, start;
-std::vector<int> muchii[mxn];
-std::queue<int> cords;
-int dist[mxn];
+const int Nmax = 100000;
 
-void bfs() {
-  int nod;
-  
-  while (!cords.empty()) {
-    nod = cords.front();
-    cords.pop();
+int n, m, s;
+int dist[Nmax];
+vector<int>mat[Nmax];
+queue<int> cords;
 
-    for (auto vec : muchii[nod]) {
-      if (dist[vec] == -1) {
-        cords.push(vec);
-        dist[vec] = dist[nod] + 1;
-      }
-    }
+void solve();
+void read();
+void bfs();
+
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  ll test=1;
+  //cin>>test;
+
+  while(test--)
+  {
+    solve();
   }
-}
-
-int main(){
-	fin >> n >> m >> start;
-
-  for (int i = 0; i < m; ++i) {
-    int x, y;
-    fin >> x >> y;
-    muchii[x].push_back(y);
-  }
-
-  for (int i = 1; i <= n; ++i) {
-    dist[i] = -1;
-  }
-  dist[start] = 0;
-
-  cords.push(start);
-
-  bfs();
 
   for (int i = 1; i <= n; ++i) {
     fout << dist[i] << ' ';
   }
   fout << '\n';
 
-
   return 0;
+}
+
+void bfs() {
+  cords.push(s);
+
+  while (!cords.empty()) {
+    int node = cords.front();
+    cords.pop();
+
+    for (auto v: mat[node]) {
+      if (dist[v] == -1) {
+        dist[v] = 1 + dist[node];
+        cords.push(v);
+      }
+    }
+  }
+}
+
+void solve() {
+  read();
+
+  for (int i = 0; i <= n; ++i) {
+    dist[i] = -1;
+  }
+  dist[s] = 0;
+
+  bfs();
+}
+
+void read() {
+  fin >> n >> m >> s;
+  for (int i = 0; i < m; ++i) {
+    int a, b;
+    fin >> a >> b;
+
+    mat[a].push_back(b);
+  }
 }

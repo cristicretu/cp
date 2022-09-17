@@ -3,69 +3,80 @@
 #include <queue>
 #include <fstream>
 
-std::fstream fin("dijkstra.in", std::ios::in);
-std::fstream fout("dijkstra.out", std::ios::out);
+using namespace std;
+
+ifstream fin("dijkstra.in", std::ios::in);
+ofstream fout("dijkstra.out", std::ios::out);
 
 const int mxn = 50001;
 const int INF = (1 << 30);
 
 int n, m;
 int dist[mxn];
-bool inQ[mxn];
+bool viz[mxn];
 
 struct cmp {
-  bool operator()(int x, int y) {
-    return dist[x] > dist[y];
+  bool operator ()(int x, int y) {
+    return dist[x] < dist[y];
   }
 };
 
-std::vector<std::pair<int,int> > g[mxn];
-std::priority_queue<int, std::vector<int>, cmp> cords;
+vector<pair<int, int> > mat[mxn];
+priority_queue<int, vector<int>, cmp> cords;
 
-void Dijkstra(int node) {
+void solve();
+void read();
+void dijkstra(int node);
+
+int main() {
+  solve();
+  return 0;
+}
+
+void dijkstra(int node) {
+  viz[node] = true;
   dist[node] = 0;
   cords.push(node);
-  inQ[node] = 1;
 
   while (!cords.empty()) {
     int newNode = cords.top();
     cords.pop();
-    inQ[newNode] = 0;
+    viz[newNode] = false;
 
-    for (auto vecin : g[newNode]) {
-      if (dist[newNode] + vecin.second < dist[vecin.first]) {
-        dist[vecin.first] = dist[newNode] + vecin.second;
-        if (!inQ[vecin.first]) {
+    for (auto vecin: mat[newNode]) {
+      if (dist[vecin.first] > dist[newNode] + vecin.second) {
+        dist[vecin.first] = dist[newNode] + vecin.second; 
+
+        if (!viz[vecin.first]) {
+          viz[vecin.first] = true;
           cords.push(vecin.first);
-          inQ[vecin.first] = 1;
         }
       }
     }
   }
 }
 
-int main(){
-  fin >> n >> m;
-
-  for (int i = 0; i < m; ++i) {
-    int x, y, c;
-    fin >> x >> y >> c;
-
-    g[x].push_back({y, c});
-  }
+void solve() {
+  read();
 
   for (int i = 1; i <= n; ++i) {
     dist[i] = INF;
   }
 
-  Dijkstra(1);
+  dijkstra(1);
 
   for (int i = 2; i <= n; ++i) {
-    if (dist[i] != INF) {
-      fout << dist[i] << ' ';
-    } else {
-      fout << "0 ";
-    }
+    if (dist[i] != INF) fout << dist[i] << ' ';
+    else fout << 0 << ' ';
   }
-  return 0;
+  fout << '\n';
+}
+
+void read() {
+  fin >> n >> m;
+  for (int i = 1; i <= m; ++i) {
+    int a, b, d;
+    fin >> a >> b >> d;
+    mat[a].push_back({b, d});
+  }
 }

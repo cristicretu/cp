@@ -2,81 +2,75 @@
 #include <vector>
 #include <queue>
 #include <fstream>
+#include <tuple>
 
 using namespace std;
 
 ifstream fin("dijkstra.in", std::ios::in);
 ofstream fout("dijkstra.out", std::ios::out);
 
-const int mxn = 50001;
-const int INF = (1 << 30);
+const int INF = 0x3f3f3f3f;
+
+using PI = pair<int,int>;
+using VI = vector<int>;
+using VP = vector<PI>;
+using VVP = vector<VP>;
 
 int n, m;
-int dist[mxn];
-bool viz[mxn];
+VVP G;
+VI dist;
 
-struct cmp {
-  bool operator ()(int x, int y) {
-    return dist[x] < dist[y];
-  }
-};
-
-vector<pair<int, int> > mat[mxn];
-priority_queue<int, vector<int>, cmp> cords;
-
-void solve();
 void read();
-void dijkstra(int node);
+void write();
+void dijkstra(int x, VI& d);
 
 int main() {
-  solve();
-  return 0;
+  read();
+  dijkstra(1, dist);
+  write();
+  return 0; 
 }
 
-void dijkstra(int node) {
-  viz[node] = true;
-  dist[node] = 0;
-  cords.push(node);
+void dijkstra(int x, VI& d) {
+  priority_queue<PI, VP, greater<PI> > Q;
+  d = VI(n + 1, INF);
+  d[x] = 0;
 
-  while (!cords.empty()) {
-    int newNode = cords.top();
-    cords.pop();
-    viz[newNode] = false;
+  Q.emplace(0, x);
+  while (!Q.empty()) {
+    auto [dx, x] = Q.top();
+    Q.pop();
 
-    for (auto vecin: mat[newNode]) {
-      if (dist[vecin.first] > dist[newNode] + vecin.second) {
-        dist[vecin.first] = dist[newNode] + vecin.second; 
+    if (dx > d[x]) continue;
 
-        if (!viz[vecin.first]) {
-          viz[vecin.first] = true;
-          cords.push(vecin.first);
-        }
+    for (auto node : G[x]) {
+      auto [y, w] = node;
+      if (d[y] > dx + w) {
+        d[y] = dx + w;
+        Q.emplace(d[y], y);
       }
     }
   }
 }
 
-void solve() {
-  read();
-
-  for (int i = 1; i <= n; ++i) {
-    dist[i] = INF;
-  }
-
-  dijkstra(1);
-
-  for (int i = 2; i <= n; ++i) {
-    if (dist[i] != INF) fout << dist[i] << ' ';
-    else fout << 0 << ' ';
-  }
-  fout << '\n';
-}
-
 void read() {
   fin >> n >> m;
-  for (int i = 1; i <= m; ++i) {
-    int a, b, d;
-    fin >> a >> b >> d;
-    mat[a].push_back({b, d});
+  G = VVP(n + 1);
+
+  int x, y, w;
+  while (m--) {
+    fin >> x >> y >> w;
+    G[x].emplace_back(y, w);
   }
+}
+
+void write() {
+  for (int i = 2; i <= n; ++i) {
+    if (dist[i] != INF) {
+      fout << dist[i] << ' ';
+    } else {
+      fout << 0 << ' ';
+    }
+  }
+  fout << '\n';
 }

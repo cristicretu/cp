@@ -1,57 +1,52 @@
-#include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <vector>
 
-std::fstream fin("inv.in", std::ios::in);
-std::fstream fout("inv.out", std::ios::out);
+using namespace std;
 
-static const int M = 9917, mxn = 1e5;
+ifstream fin("inv.in");
+ofstream fout("inv.out");
 
-int n, f[1 + mxn];
-std::pair<int, int> v[1 + mxn];
+const int MAX_N = 1e5, MOD = 9917;
 
-int mand(int x){
-  return (x & (-x));
-}
+int n;
+int aib[MAX_N + 1];
+long long ans;
+vector<pair<int,int> > v;
 
-long long q(int x){
-  long long ans(0);
-  while (x > 0){
-    ans += f[x];
-    x -= mand(x);
-  }
+void update(int x, int val);
+int query(int x);
 
-  return ans;
-}
-
-void upd(int x, int val){
-  while (x <= n){
-    f[x] += val;
-    x += mand(x);
-  }
-}
-
-int main(){
+int main() {
   fin >> n;
-
-  for (int i = 1; i <= n; ++i){
-    fin >> v[i].first;
-    v[i].second = i;
+  int x;
+  for (int i = 0; i < n; ++i) {
+    fin >> x;
+    v.emplace_back(x, i + 1);
   }
 
-  std::sort(v + 1, v + n + 1);
-  for (int i = 1; i <= n; ++i){
-    v[i].first = i;
-  }
-  std::sort(v + 1, v + n + 1,  [](const std::pair<int, int> a,
-      const std::pair<int, int> b){ return a.second < b.second; });
+  sort(v.begin(), v.end(), greater<pair<int,int>>());
 
-  long long ans(0);
-  for (int i = 1; i <= n; ++i){
-    ans += q(v[i].first - 1);
-    upd(v[i].first, 1);
+  for (int i = 0; i < n; ++i) {
+    x = v[i].second; // real pos
+    ans += 1LL * query(x);
+    update(x, 1);
   }
-
-  fout << (1LL * n * (n - 1) / 2 - 1LL * ans) % M;
+  
+  fout << ans % MOD << '\n';
   return 0;
+}
+
+int query(int x) {
+  int sum = 0;
+  for (int i = x; i; i -= i & (-i)) {
+    sum += aib[i];
+  }
+  return sum;
+}
+
+void update(int x, int val) {
+  for (int i = x; i <= n; i += i & (-i)) {
+    aib[i] += val;
+  }
 }

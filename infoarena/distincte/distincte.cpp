@@ -1,76 +1,105 @@
-#include <iostream>
-#include <algorithm>
 #include <fstream>
+#include <vector>
 
-typedef long long ll;
+using namespace std;
 
-std::fstream fin("distincte.in", std::ios::in);
-std::fstream fout("distincte.out", std::ios::out);
+ifstream fin("distincte.in");
+ofstream fout("distincte.out");
 
-static const int mxn = 1e5, M = 666013;
+const int maxN = 1e5, MOD = 666013;
 
-ll n, m, k, upd[1 + mxn];
+// vector<int> ar;
+int aib[maxN + 1], a[maxN + 1];
+int n, k, m;
 
-struct Query{
-  ll l, r, orig;
+// void Build(int st, int dr, int n)
+// {
+//   if (st == dr)
+//   {
+//     fin >> ar[n];
+//     return;
+//   }
 
-  bool operator < (const Query &other) const{
-    if (r == other.r) return l < other.l;
-    return r < other.r;
+//   int mid = (st + dr) / 2;
+//   Build(st, mid, 2 * n);
+//   Build(mid + 1, dr, 2 * n + 1);
+//   ar[n] = ar[2 * n] + ar[2 * n + 1];
+// }
+
+// void update(int nod, int st, int dr, int a, int b)
+// {
+//   if (st == dr)
+//   {
+//     ar[nod] -= b;
+//     return;
+//   }
+
+//   int mid = (st + dr) / 2;
+//   if (a <= mid)
+//     update(nod * 2, st, mid, a, b);
+//   else
+//     update(nod * 2 + 1, mid + 1, dr, a, b);
+
+//   ar[nod] = ar[2 * nod] + ar[2 * nod + 1];
+// }
+
+// int query(int nod, int st, int dr, int a, int b)
+// {
+//   if (st >= a && dr <= b)
+//   {
+//     return ar[nod];
+//   }
+
+//   int sum = 0;
+//   int mid = (st + dr) / 2;
+//   if (a <= mid)
+//     sum += query(2 * nod, st, mid, a, b);
+//   if (b > mid)
+//     sum += query(2 * nod + 1, mid + 1, dr, a, b);
+
+//   return sum;
+// }
+
+void update(int poz, int val)
+{
+  for (int i = poz; i <= n; i += (i & (-i)))
+  {
+    aib[i] = (aib[i] + val) % MOD;
   }
-}queries[1 + mxn];
+}
 
-struct Aib{
-  ll v[1 + mxn];
-  
-  void update(ll poz, ll val){
-    for (ll i = poz; i <= n; i += i & (-i))
-        v[i] += val;
+int query(int poz)
+{
+  int sum = 0;
+  for (int i = poz; i; i -= (i & (-i)))
+  {
+    sum = (sum + aib[i]) % MOD;
   }
+  return sum;
+}
 
-  ll query(ll poz){
-    ll s = 0;
-    for (ll i = poz; i >= 1; i -= i & (-i))
-        s += v[i];
-    return s;
-  }
-}aib;
-
-ll v[1 + mxn], ans[1 + mxn];
-
-int main() {
+int main()
+{
   fin >> n >> k >> m;
 
-  for (ll i = 1; i <= n; ++i){
-    fin >> v[i];
-    aib.update(i, v[i]);
+  for (int i = 1; i <= n; ++i)
+  {
+    fin >> a[i];
+    update(i, a[i]);
   }
 
-  for (ll i = 1; i <= m; ++i){
-    fin >> queries[i].l >> queries[i].r;
-    queries[i].orig = i;
+  int a, b;
+  while (m--)
+  {
+    fin >> a >> b;
   }
-  
-  std::sort(queries + 1, queries + m + 1);
-  ll poz = 1;
-  for (ll i = 1; i <= m; ++i){
-    while (poz <= queries[i].r){
-      if (upd[v[poz]]){
-        aib.update(upd[v[poz]], -v[poz]);
-      }
-      upd[v[poz]] = poz;
-      poz++;
-    }
+  // ar.resize(4 * n);
+  // Build(1, n, 1);
 
-    ans[queries[i].orig] = aib.query(queries[i].r) -
-                           aib.query(queries[i].l - 1);
-  }
-
-  for (ll i = 1; i <= m; ++i){
-    std::cerr << m << ' ';
-    std::cerr << ans[i] % M << ' ';
-    fout << ans[i] % M << '\n';
-  }
-  
-  return 0;
+  // int a, b;
+  // while (m--)
+  // {
+  //   fin >> a >> b;
+  //   fout << query(1, 1, n, a, b) << '\n';
+  // }
 }

@@ -1,0 +1,96 @@
+I
+1.
+   x >= 2001
+   x <= 2021
+   x >= 2002 && x <= 2020
+   C
+
+2.
+2,
+22
+222
+228
+229
+28
+282
+288
+289
+8
+A
+
+3.
+C
+
+4.
+50,2020
+D
+
+5.
+B
+
+II
+2197553
+
+2012 2201
+ELEMENT
+
+III
+1. 
+int putere(int n) {
+    int numar = INT_MAX, exp = INT_MAX;
+    int p, d = 2;
+
+    while (n) {
+        p = 0;
+
+        while (n % d == 0) {
+            p++;
+            n /= d;
+          } 
+
+        if (p < exp) {
+            exp = p;
+            numar = d;
+          }
+        n /=10;
+      }
+  }
+
+2.
+int first_value = a[k][k - 1];
+for (int j = k - 1; j > 1; --j) {
+    a[k][j] = a[k][j - 1];
+  }
+a[k][1] = first_value;
+
+3.
+1 -> 10 + 1
+7 -> 10 + 49
+2 -> 10 + 4
+1 -> 1
+1 -> 1
+2 -> 4
+1 -> 1
+7 -> 49
+2 -> 4
+
+30 + 50 + 4 + 2 + 4 + 50 + 4
+80 + 10 + 50 + 4
+90 + 50 + 4 = 144
+
+bool fv[11];
+int ans = 0;
+
+int main() {
+    int x;
+    while (fin >> x) {
+        if (!fv[x]) {
+            fv[x] = 1;
+            ans += 10;
+          }
+
+        ans += x * x;
+      }
+
+    return ans;
+  }

@@ -1,62 +1,70 @@
 #include <iostream>
+#include <vector>
 #include <fstream>
 
-std::fstream fin("arbint.in", std::ios::in);
-std::fstream fout("arbint.out", std::ios::out);
+using namespace std;
+
+ifstream fin("arbint.in", std::ios::in);
+ofstream fout("arbint.out", std::ios::out);
 
 static const int mxn = 1e5;
 
-int n, v[1 + mxn], q , aib[1 + 4 * mxn];
+size_t n, q;
+vector<int> aib;
 
-void build(int nod, int a, int b){
-  if (a == b){
-    aib[nod] = v[a];
+void build(size_t nod, int a, int b){
+  if (a == b) {
+    fin >> aib[nod];
     return;
   }
 
-  int mb = (a + b) / 2;
-  build(nod * 2, a, mb);
-  build(nod * 2 + 1, mb + 1, b);
-  aib[nod] = std::max(aib[nod * 2], aib[nod * 2 + 1]);
-  return;
+  int mid = (a + b) / 2;
+
+  build(nod * 2, a, mid);
+  build(nod * 2 + 1, mid + 1, b);
+  aib[nod] = max(aib[nod * 2], aib[nod * 2 + 1]);
 }
 
-int query(int nod, int st, int dr, int a, int b){
-  if (st >= a && dr <= b){
+int query(size_t nod, int st, int dr, int a, int b){
+  if (st >= a && dr <= b) {
     return aib[nod];
   }
 
-  int mb = (st + dr) / 2, rez = 0;
-  if (mb >= a){
-    rez = std::max(rez, query(nod * 2, st, mb, a, b));
+  int mid = (st + dr) / 2;
+  int ans = 0;
+  if (mid >= a) {
+    ans = max(ans, query(nod * 2, st, mid, a, b));
   }
-  if (mb + 1 <= b){
-    rez = std::max(rez, query(nod * 2 + 1, mb + 1, dr, a, b));
+  if (b > mid) {
+    ans = max(ans, query(nod * 2 + 1, mid + 1, dr, a, b));
   }
-  return rez;
+  
+  return ans; 
 }
-void update(int nod, int st, int dr, int poz, int val){
-  if (st == dr){
+
+void update(size_t nod, int st, int dr, int poz, int val){
+  if (st == dr) {
     aib[nod] = val;
     return;
   }
 
-  int mb = (st + dr) / 2;
-  if (mb >= poz){
-    update(nod * 2, st, mb, poz, val);
+  int mid = (st + dr) / 2;
+  if (mid >= poz) {
+    update(nod * 2, st, mid, poz, val);
   } else {
-    update(nod * 2 + 1, mb + 1, dr, poz, val);
+    update(nod * 2 + 1, mid + 1, dr, poz, val);
   }
-  aib[nod] = std::max(aib[nod * 2], aib[nod * 2 + 1]);
+
+  aib[nod] = max(aib[nod * 2], aib[nod * 2 + 1]);
   return;
 }
 
 int main(){
 	fin >> n >> q;
-  for (int i = 1; i <= n; ++i){
-    fin >> v[i];
-  }
+  aib.resize(4 * n);
+
   build(1, 1, n);
+
   while (q--){
     int c, a , b;
     fin >> c >> a >> b;

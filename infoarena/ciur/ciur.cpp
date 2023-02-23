@@ -1,33 +1,37 @@
-#include <iostream>
 #include <bitset>
 #include <fstream>
+#include <iostream>
 
-std::fstream fin("ciur.in", std::ios::in);
-std::fstream fout("ciur.out", std::ios::out);
+using namespace std;
 
-static const int mxn = 2e6;
+ifstream fin("ciur.in");
+ofstream fout("ciur.out");
 
-std::bitset<mxn> ciur;
+const int mxn = 2e6;
+
+bitset<mxn> ciur;
 int n;
 
-int main(){
-	fin >> n;
-  fin.close();
-  for (int i = 4; i <= n; i += 2)
-    ciur[i] = true;
-  for (int i = 3; i * i <= n; i += 2){
-    if (ciur[i] == false){
-      for (int j = i * i; j <= n; j += i + i)
-        ciur[j] = true;
+int main() {
+  fin >> n;
+
+  ciur[0] = ciur[1] = 1;
+  for (int i = 4; i <= n; i += 2) {
+    ciur[i] = 1;
+  }
+
+  for (int i = 3; i * i <= n; i += 2) {
+    if (ciur[i] == 0) {
+      for (int j = i * i; j <= n; j += i + i) {
+        ciur[j] = 1;
+      }
     }
   }
-  ciur[1] = ciur[0] = true;
 
   int ans = 0;
-  for (int i = 1; i <= n; ++i){
+  for (int i = 1; i <= n; ++i) {
     if (!ciur[i]) ans++;
   }
   fout << ans << '\n';
-  fout.close();
   return 0;
 }

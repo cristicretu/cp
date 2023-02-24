@@ -1,63 +1,67 @@
 #include <iostream>
 #include <fstream>
 
-std::fstream fin("evaluare.in", std::ios::in);
-std::fstream fout("evaluare.out", std::ios::out);
+using namespace std;
 
-int i;
-std::string s;
+ifstream fin("evaluare.in");
+ofstream fout("evaluare.out");
+
+string s;
+unsigned long i;
 int eval();
 int eval1();
 int eval2();
 
-int eval(){
-  int rez = eval1();
-  while (s[i] == '+' || s[i] == '-'){
-    if (s[i] == '+'){
-      ++i;
-      rez += eval1();
-    } else {
-      ++i;
-      rez -= eval1();
-    }
-  }
-
-  return rez;
+int eval() {
+	int ans = eval1();
+	
+	while (s[i] == '+' || s[i] == '-') {
+		if (s[i] == '+') {
+			++i;
+			ans += eval1();
+		} else {
+			++i;
+			ans -= eval1();
+		}
+	}
+	
+	return ans;
 }
 
-int eval1(){
-  int rez = eval2();
-  while (s[i] == '*' || s[i] == '/'){
-    if (s[i] == '*'){
-      ++i;
-      rez *= eval2();
-    } else {
-      ++i;
-      rez /= eval2();
-    }
-  }
-  
-  return rez;
+int eval1() {
+	int ans = eval2();
+	
+	while (s[i] == '*' || s[i] == '/') {
+		if (s[i] == '*') {
+			++i;
+			ans *= eval2();
+		} else {
+			++i;
+			ans /= eval2();
+		}
+	}
+	
+	return ans;
 }
 
-int eval2(){
-  int rez = 0;
-
-  if (s[i] == '('){
-    ++i;
-    rez += eval();
-    ++i;
-  } else {
-    while ('0' <= s[i] && s[i] <= '9'){
-      rez = rez * 10 + (s[i] - '0');
-      ++i;
-    }
-  }
-  return rez;
+int eval2() {
+	int ans = 0;
+	
+	if (s[i] == '(') {
+		++i;
+		ans += eval();
+		++i;
+	} else {
+		while (s[i] >= '0' && s[i] <= '9') {
+			ans = ans * 10 + (s[i] - '0');
+			++i;
+		}
+	}
+	
+	return ans;
 }
 
-int main(){
-  fin >> s;
-  fout << eval();
-  return 0;
+int main() {
+	fin >> s;
+	fout << eval();
 }

@@ -8,72 +8,56 @@ ifstream fin("bfs.in");
 ofstream fout("bfs.out");
 
 using ll = long long;
-#define mod 1000000007
+using VI = vector<int>;
+using VVI = vector<VI>;
 
-const int Nmax = 100000;
+int n, m, source;
+VVI G;
+VI dist;
 
-int n, m, s;
-int dist[Nmax];
-vector<int>mat[Nmax];
-queue<int> cords;
-
-void solve();
 void read();
-void bfs();
+void bfs(int start);
+void write();
 
 int main() {
-  ios_base::sync_with_stdio(false);
-  cin.tie(nullptr);
-
-  ll test=1;
-  //cin>>test;
-
-  while(test--)
-  {
-    solve();
-  }
-
-  for (int i = 1; i <= n; ++i) {
-    fout << dist[i] << ' ';
-  }
-  fout << '\n';
-
-  return 0;
+  read();
+  bfs(source);
+  write();
 }
 
-void bfs() {
-  cords.push(s);
+void read() {
+  fin >> n >> m >> source;
+  G = VVI(n + 1);
+    
+  int x, y;
+  while(m--) {
+    fin >> x >> y;
+    G[x].emplace_back(y); 
+  }
+}
 
-  while (!cords.empty()) {
-    int node = cords.front();
-    cords.pop();
-
-    for (auto v: mat[node]) {
-      if (dist[v] == -1) {
-        dist[v] = 1 + dist[node];
-        cords.push(v);
+void bfs(int start) {
+  dist = VI(n + 1, -1);
+  dist[start] = 0;
+  queue<int> Q;
+  
+  Q.push(start);
+  while(!Q.empty()) {
+    int x = Q.front();
+    Q.pop();
+    
+    for (auto node : G[x]) {
+      if (dist[node] == -1) {
+        dist[node] = 1 + dist[x];
+        Q.push(node);
       }
     }
   }
 }
 
-void solve() {
-  read();
-
-  for (int i = 0; i <= n; ++i) {
-    dist[i] = -1;
+void write() {
+  for (int i = 1; i <= n; ++i) {
+    fout << dist[i] << ' ';
   }
-  dist[s] = 0;
-
-  bfs();
-}
-
-void read() {
-  fin >> n >> m >> s;
-  for (int i = 0; i < m; ++i) {
-    int a, b;
-    fin >> a >> b;
-
-    mat[a].push_back(b);
-  }
+  fout << '\n';
 }

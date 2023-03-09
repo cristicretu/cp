@@ -1,57 +1,80 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <fstream>
+#include <vector>
 
-std::ifstream fin("cautbin.in");
-std::ofstream fout("cautbin.out");
+using namespace std;
 
-static const int mxn = 1e5;
+ifstream fin("cautbin.in");
+ofstream fout("cautbin.out");
 
-int n, v[1 + mxn], m;
+using VI = vector<int>;
+
+unsigned n, m;
+VI v;
+
+void read();
+void solve();
 
 int main() {
+  read();
+  solve();
+  return 0;
+}
+
+void read() {
   fin >> n;
-  for (int i = 1; i <= n; ++i) {
-    fin >> v[i];
-  }
+  v = VI(n + 1);
+ 
+  for (unsigned i = 1; i <= n; ++i) {
+   fin >> v[i];
+  } 
+  
   fin >> m;
-  for (int t = 1; t <= m; ++t) {
-    int a, b, ans;
-    fin >> a >> b;
-    if (a == 2) {
+}
+
+
+void solve() {
+  int op, x;
+  while (m--) {
+    fin >> op >> x;
+    
+    int ans = 0;
+    if (op == 2) {
       int lb = 1, rb = n;
+      
       while (lb <= rb) {
         int mb = lb + (rb - lb) / 2;
-
-        if (v[mb] < b) {
+        
+        if (v[mb] < x) {
           lb = mb + 1;
         } else {
-          rb = mb - 1;
           ans = mb;
+          rb = mb - 1;
         }
       }
-
+      
       fout << ans << '\n';
     } else {
       int lb = 1, rb = n;
+      
       while (lb <= rb) {
         int mb = lb + (rb - lb) / 2;
-
-        if (v[mb] <= b) {
+        
+        if (v[mb] <= x) {
           ans = mb;
           lb = mb + 1;
         } else {
           rb = mb - 1;
         }
       }
-
-      if (a == 0) {
-        if (v[ans] == b)
-          fout << ans << '\n';
-        else
-          fout << "-1\n";
+      
+      if (op == 0) {
+        if (v[ans] == x) fout << ans;
+        else fout << "-1";
       } else {
-        fout << ans << '\n';
+        fout << ans;
       }
+      fout << '\n';
     }
   }
-  return 0;
 }

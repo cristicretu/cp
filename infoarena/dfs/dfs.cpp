@@ -8,49 +8,56 @@ using namespace std;
 std::ifstream fin("dfs.in");
 std::ofstream fout("dfs.out");
 
-const int maxn = 100001;
+using VI = vector<int>;
+using VVI = vector<VI>;
+using VB = vector<bool>;
 
-int n, m, ans;
-bool viz[maxn];
-vector<int>mat[maxn];
+unsigned n, m;
+VVI G;
+VB v;
 
+void read();
 void solve();
 void dfs(int node);
-void read();
 
 int main() {
+  read();
   solve();
-
-  fout << ans << '\n';
   return 0;
 }
 
 void dfs(int node) {
-  viz[node] = true;
-  for (auto v: mat[node]) {
-    if (!viz[v]) {
-      dfs(v);
-    }
-  }
-}
-
-void solve() {
-  read();
-
-  for (int i = 1; i <= n; ++i) {
-    if (!viz[i]) {
-      ans += 1;
-      dfs(i);
+  v[node] = true;
+  
+  for (const int& y : G[node]) {
+    if (!v[y]) {
+      dfs(y);
     }
   }
 }
 
 void read() {
   fin >> n >> m;
-  for (int i = 1; i <= m; ++i) {
-    int a, b;
-    fin >> a >> b;
-    mat[a].push_back(b);
-    mat[b].push_back(a);
+  v = VB(n + 1);
+  G = VVI(n + 1);
+  
+  int x, y;
+  while (m--) {
+    fin >> x >> y;
+    G[x].push_back(y);
+    G[y].push_back(x); 
   }
+}
+
+void solve() {
+  unsigned ans = 0;
+  
+  for (unsigned i = 1; i <= n; ++i) {
+    if (!v[i]) {
+      ++ans;
+      dfs(i);
+    }
+  }
+  
+  fout << ans << '\n';
 }

@@ -1,5 +1,5 @@
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -7,13 +7,11 @@ const int maxn = 1000;
 
 int n, gmax;
 
-struct obiect { 
+struct obiect {
   int w, p;
 } a[maxn + 1];
 
-bool cmp(obiect a, obiect b) {
-  return a.p * b.w > a.w * b.p;
-}
+bool cmp(obiect a, obiect b) { return a.p * b.w > a.w * b.p; }
 
 int main(void) {
   cin >> n >> gmax;

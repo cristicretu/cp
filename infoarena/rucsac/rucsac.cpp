@@ -1,28 +1,45 @@
-#include <bits/stdc++.h>
+#include <fstream>
+#include <iostream>
+#include <vector>
 
-std::ifstream fin("rucsac.in");
-std::ofstream fout("rucsac.out");
+using namespace std;
+
+ifstream fin("rucsac.in");
+ofstream fout("rucsac.out");
 
 static const int mxn = 5e4;
 
-int n, g, w[1 + mxn], p[1 + mxn], ans[1 + mxn];
+int n, G;
+int w[mxn + 1], p[mxn + 1], dp[mxn + 1];
 
-int main(){
-  fin >> n >> g;
-  for (int i = 1; i <= n; ++i){
-    fin >> w[i] >> p[i];
-  }
+void read();
+void solve();
 
-  int rez = 0;
-  for (int i = 1; i <= n; ++i){
-    for (int j = g - w[i]; j >= 0; --j){
-      if (ans[j + w[i]] < ans[j] + p[i]){
-        ans[j + w[i]] = ans[j] + p[i];
-        rez = std::max(ans[j + w[i]], rez);
+int main() {
+  read();
+  solve();
+  return 0;
+}
+
+void solve() {
+  int ans = 0;
+
+  for (int i = 1; i <= n; ++i) {
+    for (int j = G - w[i]; j >= 0; --j) {
+      if (dp[j + w[i]] < dp[j] + p[i]) {
+        dp[j + w[i]] = dp[j] + p[i];
+        ans = max(dp[j + w[i]], ans);
       }
     }
   }
 
-  fout << rez << '\n';
-  return 0;
+  fout << ans << '\n';
+}
+
+void read() {
+  fin >> n >> G;
+
+  for (int i = 1; i <= n; ++i) {
+    fin >> w[i] >> p[i];
+  }
 }

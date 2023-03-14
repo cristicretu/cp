@@ -28,8 +28,9 @@ int find(int x) {
   if (tata[x] == 0) {
     return x;
   }
-  tata[x] = find(tata[x]);
-  return tata[x];
+  int k = find(tata[x]);
+  tata[x] = k;
+  return k;
 }
 
 void unif(int x, int y) { tata[find(x)] = y; }
@@ -58,7 +59,7 @@ void solve() {
 void read() {
   fin >> n >> m;
 
-  for (int i = 1; i <= n; ++i) {
-    tata[i] = i;
-  }
+  // for (int i = 1; i <= n; ++i) {
+  //   tata[i] = i;
+  // }
 }
